@@ -20,3 +20,10 @@ const readJSONData = (nomeFile) => {
     const fileData = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(fileData);
 }
+
+// Scrittura file
+const writeJSONData = (nomeFile, newData) => {
+    const filePath = path.join(__dirname, nomeFile + '.json');
+    const fileString = JSON.stringify(newData);
+    fs.writeFileSync(filePath, fileString);
+}
