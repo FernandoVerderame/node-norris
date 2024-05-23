@@ -10,3 +10,10 @@ const fs = require("fs");
 
 // Importo il modulo Path
 const path = require("path");
+
+// Lettura file
+const readJSONData = (nomeFile) => {
+    const filePath = path.join(__dirname, nomeFile + '.json');
+    const fileData = fs.readFileSync(filePath, 'utf-8');
+    return JSON.parse(fileData);
+}
