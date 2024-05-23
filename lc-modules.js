@@ -28,6 +28,17 @@ const writeJSONData = (nomeFile, newData) => {
     fs.writeFileSync(filePath, fileString);
 }
 
+// Validazione duplicati tramite una flag
+const isDuplicate = (jokesDb, value) => {
+    let found = false;
+    jokesDb.forEach(j => {
+        if (j.value === value) {
+            found = true;
+        }
+    });
+    return found;
+}
+
 // Creo il server
 const server = http.createServer((req, res) => {
     const norrisDb = readJSONData('norrisDb');
@@ -50,8 +61,10 @@ const server = http.createServer((req, res) => {
                     res.end(fileHtml);
 
                     // Aggiungi nuova battuta a norrisDb e salvo sul file
-                    norrisDb.push({ value: data.value });
-                    writeJSONData('norrisDb', norrisDb);
+                    if (!isDuplicate(norrisDb, data.value)) {
+                        norrisDb.push({ value: data.value });
+                        writeJSONData('norrisDb', norrisDb);
+                    }
                 });
     }
 });
