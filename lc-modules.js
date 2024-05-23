@@ -27,3 +27,35 @@ const writeJSONData = (nomeFile, newData) => {
     const fileString = JSON.stringify(newData);
     fs.writeFileSync(filePath, fileString);
 }
+
+// Creo il server
+const server = http.createServer((req, res) => {
+    const norrisDb = readJSONData('norrisDb');
+
+    switch (req.url) {
+        case '/favicon.ico':
+            res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
+            res.end();
+            break;
+        case '/':
+            res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+
+            // API
+            fetch('https://api.chucknorris.io/jokes/random')
+                .then(response => response.json())
+                .then(data => {
+                    let fileHtml = '<ul>';
+                    norrisDb.forEach(({ value }) => fileHtml += `<li>${value}</li>`);
+                    fileHtml += '</ul>';
+                    res.end(fileHtml);
+
+                    // Aggiungi nuova battuta a norrisDb e salvo sul file
+                    norrisDb.push({ value: data.value });
+                    writeJSONData('norrisDb', norrisDb);
+                });
+    }
+});
+
+server.listen(port, host, () => {
+    console.log(`Server avviato su http://${host}:${port}`);
+});
