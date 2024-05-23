@@ -11,6 +11,9 @@ const fs = require("fs");
 // Importo il modulo Path
 const path = require("path");
 
+// Importo node-fetch per le richieste HTTP
+const fetch = require("node-fetch");
+
 // Lettura file
 const readJSONData = (nomeFile) => {
     const filePath = path.join(__dirname, nomeFile + '.json');
