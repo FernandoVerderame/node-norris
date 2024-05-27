@@ -55,15 +55,15 @@ const server = http.createServer((req, res) => {
             fetch('https://api.chucknorris.io/jokes/random')
                 .then(response => response.json())
                 .then(data => {
-                    let lastJoke = norrisDb.length > 0 ? norrisDb[norrisDb.length - 1].value : "Nessuna battuta disponibile";
-                    let fileHtml = `<p>${lastJoke}</p>`;
-                    res.end(fileHtml);
-
                     // Aggiungi nuova battuta a norrisDb e salvo sul file
                     if (!isDuplicate(norrisDb, data.value)) {
                         norrisDb.push({ value: data.value });
                         writeJSONData('norrisDb', norrisDb);
                     }
+                    let lastJoke = norrisDb.length > 0 ? norrisDb[norrisDb.length - 1].value : "Nessuna battuta disponibile";
+                    let fileHtml = `<p>${lastJoke}</p>`;
+                    res.end(fileHtml);
+
                 });
     }
 });
